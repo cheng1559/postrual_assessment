@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c7b6b20b-be4c-49d0-987e-3720d585b712" name="变更" comment="">
+      <change afterPath="$PROJECT_DIR$/test_videos/baihe2.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/baihe3.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/baihe4.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/banlanchui2.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/banlanchui3.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/banlanchui4.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/banlanchui5.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/hit.MOV" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/louxi2.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/louxi3.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/baihe2.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/baihe3.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/baihe4.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/banlanchui2.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/banlanchui3.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/banlanchui4.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/banlanchui5.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/hit.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/louxi2.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/louxi3.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/rufengsibi2.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/rufengsibi3.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/stand.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/standard/baihe.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/standard/banlanchui.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/standard/louxi.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/standard/rufengsibi.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/walk.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/output/walk2.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/baihe2_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/baihe3_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/baihe4_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/baihe_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/banlanchui2_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/banlanchui3_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/banlanchui4_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/banlanchui5_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/banlanchui_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/hit_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/louxi2_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/louxi3_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/louxi_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/rufengsibi2_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/rufengsibi3_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/rufengsibi_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/stand_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/walk2_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/save/walk_skeleton.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/stand.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/standard/baihe.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/standard/banlanchui.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/standard/louxi.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/standard/rufengsibi.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/walk.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test_videos/walk2.mp4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tools/dtw_calculate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_videos/output/skeleton_video.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_videos/test1.MOV" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/skeleton_generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/skeleton_generator.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Programs/Python/Python310/Lib/site-packages/matplotlib/pyplot.py" root0="SKIP_INSPECTION" />
+    <setting file="file://$USER_HOME$/AppData/Roaming/Python/Python310/site-packages/dtw/dtw.py" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2L5QmhTSjfnxyTZf4UeqsZ5Kwsd" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Carl/Documents/GitHub/postrual_assessment/postural-assessment&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Carl\Documents\GitHub\postrual_assessment\postural-assessment\test_videos" />
+      <recent name="C:\Users\Carl\Documents\GitHub\postrual_assessment\postural-assessment\tools" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.main">
+    <configuration name="dtw_calculate" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="postural-assessment" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tools" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="C:\Users\Carl\Documents\GitHub\postrual_assessment\postural-assessment\tools\dtw_calculate.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="postural-assessment" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+        <item itemvalue="Python.dtw_calculate" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="c7b6b20b-be4c-49d0-987e-3720d585b712" name="变更" comment="" />
+      <created>1675158624988</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1675158624988</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>
