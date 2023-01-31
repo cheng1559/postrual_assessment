@@ -3,6 +3,7 @@ import mediapipe as mp
 import numpy as np
 import json
 import os
+import math
 import matplotlib.pyplot as plt
 
 mmp = [0, -1, -1, -1, -1, -1, -1, 1, 2, -1, -1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22,
@@ -13,15 +14,40 @@ con = [[0, 1], [0, 2], [0, 3], [3, 4], [3, 5], [3, 16], [4, 6], [5, 7], [6, 8], 
 
 
 def change_coordinate(skeleton):
-    mid_node = (skeleton[4] + skeleton[5] + skeleton[17] + skeleton[18]) / 4
-    for i, node in enumerate(skeleton):
-        skeleton[i][:3] -= mid_node[:3]
+    mid_joint = (skeleton[4] + skeleton[5] + skeleton[17] + skeleton[18]) / 4
+    for i, joint in enumerate(skeleton):
+        skeleton[i][:3] -= mid_joint[:3]
     return skeleton
 
 
-def draw_skeleton(img, skeleton, middle=True, video=False):
-    if middle:
-        skeleton = change_coordinate(skeleton)
+def change_video_coordinate(skeleton_video):
+    i = 0
+    while skeleton_video[i][0][0] == 0:
+        i += 1
+    sk = skeleton_video[i]
+
+    mid_joint = (sk[4] + sk[5] + sk[17] + sk[18]) / 4
+    n1, n2 = sk[3], sk[16]
+    dis = math.sqrt((n1[0] - n2[0]) ** 2 + (n1[1] - n2[1]) ** 2)
+    p = 0.1 / dis if dis != 0 else 1
+
+    for i, skeleton in enumerate(skeleton_video):
+        n = min(10, len(skeleton_video) - i)
+        for j in range(1, n):
+            skeleton_video[i] += skeleton_video[i + j]
+        skeleton_video[i] /= n
+        # if i > 0 and sk_distance(skeleton_video[i], skeleton_video[i - 1]) > 40:
+        #     skeleton_video[i] = skeleton_video[i - 1]
+
+        for j, joint in enumerate(skeleton):
+            skeleton_video[i][j][:3] -= mid_joint[:3]
+            skeleton_video[i][j][:3] *= p
+
+    return skeleton_video
+
+def draw_skeleton(img, skeleton, middle=True, show=False, video=False):
+    # if middle:
+    #     skeleton = change_coordinate(skeleton)
     h, w, c = img.shape
 
     # draw bones
@@ -40,23 +66,30 @@ def draw_skeleton(img, skeleton, middle=True, video=False):
         if middle:
             cx, cy = int(cx + w / 2), int(cy + h / 2)
         cv2.circle(img, (cx, cy), int(h / 100), (0, 0, 255), cv2.FILLED)
-    cv2.imshow('', img)
-    cv2.waitKey(1 if video else 0)
+    if show:
+        cv2.imshow('', img)
+        cv2.waitKey(1 if video else 0)
+    return img
 
 
-def read_skeleton_video(path):
+def read_skeleton_video(dir, json_name, debug=False):
+    path = '{}{}'.format(dir, json_name)
     skeleton_video = list()
     with open(path, 'r') as load_f:
         load_list = json.load(load_f)
-        print('load {} success'.format(path))
-    for dict in load_list:
-        skeleton = dict['skeleton']
+        if debug:
+            print('Load {} success.'.format(path))
+    for sk_dict in load_list:
+        skeleton = np.array(sk_dict['skeleton'])
         skeleton_video.append(skeleton)
     return skeleton_video
 
 
-def make_skeleton_video(path):
+def make_skeleton_video(dir, video_name):
+    path = '{}{}'.format(dir, video_name)
     mpPose = mp.solutions.pose
+    pose = mpPose.Pose()
+
     skeleton_video = list()
     cap = cv2.VideoCapture(path)
     frame = 0
@@ -64,15 +97,15 @@ def make_skeleton_video(path):
         success, img = cap.read()
         if not success:
             break
-        skeleton = get_skeleton(mpPose, img)
+        skeleton = get_skeleton(pose, img)
         skeleton_video.append(skeleton)
         frame += 1
-        print('frame {} success!'.format(frame))
+        if (frame % 50 == 0):
+            print('frame {} success!'.format(frame))
     return skeleton_video
 
 
-def get_skeleton(mpPose, img):
-    pose = mpPose.Pose()
+def get_skeleton(pose, img):
     # img = cv2.resize(img, (1000, 1600))
 
     h, w, c = img.shape
@@ -87,13 +120,24 @@ def get_skeleton(mpPose, img):
         for id, lm in enumerate(result.landmark):
             if mmp[id] != -1:
                 skeleton[mmp[id]] = [lm.x, lm.y, lm.z, lm.visibility]
+
         mid = (skeleton[4] + skeleton[5] + skeleton[17] + skeleton[18]) / 4
+
         skeleton[3] = (mid + skeleton[4] + skeleton[5]) / 3
         skeleton[16] = (mid + skeleton[17] + skeleton[18]) / 3
+
+        #calculate dis
+        # n1, n2 = skeleton[3], skeleton[16]
+        # dis = math.sqrt((n1[0] - n2[0]) ** 2 + (n1[1] - n2[1]) ** 2)
+        # p = 0.1 / dis
+        #
+        # for id, joint in enumerate(skeleton):
+        #     skeleton[id][:3] *= p
+
     return skeleton
 
 
-def skeleton2json(skeleton, dir):
+def skeleton2json(skeleton, dir, file_name):
     skeleton_list = skeleton.tolist()
 
     output_dict = dict()
@@ -101,16 +145,20 @@ def skeleton2json(skeleton, dir):
 
     if not os.path.exists(dir):
         os.mkdir(dir)
-    path = '{}skeleton.json'.format(dir)
+
+    name_without_suffix = file_name.split('.')[0]
+    path = '{}{}.json'.format(dir, name_without_suffix)
     with open(path, "w") as f:
         json.dump(output_dict, f)
         print('write {} success'.format(path))
 
-def skeleton_video2json(skeleton_video, dir):
+def skeleton_video2json(skeleton_video, dir, file_name):
     output_list = list()
     if not os.path.exists(dir):
         os.mkdir(dir)
-    path = '{}skeleton_video.json'.format(dir)
+
+    name_without_suffix = file_name.split('.')[0]
+    path = '{}{}.json'.format(dir, name_without_suffix)
 
     for frame, skeleton in enumerate(skeleton_video):
         skeleton_list = skeleton.tolist()
@@ -125,29 +173,57 @@ def skeleton_video2json(skeleton_video, dir):
         json.dump(output_list, f)
         print('write {} success'.format(path))
 
+def play_skeleton_video(skeleton_video, size=(1080, 1920, 3), middle=True, save=False, save_dir='', file_name='', std=False, std_skv=''):
+    name_without_suffix = file_name.split('.')[0]
+    save_path = '{}{}_skeleton.mp4'.format(save_dir, name_without_suffix)
+
+    if save:
+        if not os.path.exists(save_dir):
+            os.mkdir(save_dir)
+        fps = 30
+        _size = (1920, 1080)
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        videoWriter = cv2.VideoWriter(save_path, fourcc, fps, _size, True)
+
+    if middle:
+        skeleton_video = change_video_coordinate(skeleton_video)
+        std_skv = change_video_coordinate(std_skv)
+
+    for id, skeleton in enumerate(skeleton_video):
+        img = np.ndarray(size, np.uint8)
+        if id < len(std_skv):
+            img = draw_skeleton(img, std_skv[id], middle=middle, show=False, video=True)
+        img = draw_skeleton(img, skeleton, middle=middle, show=True, video=True)
+        if save:
+            videoWriter.write(img)
+        cv2.waitKey(1)
+
+    if save:
+        print('The video is saved as {}.'.format(save_path))
+        videoWriter.release()
 
 def test():
     mpPose = mp.solutions.pose
     pose = mpPose.Pose()
 
-    img_path = './test_images/test7.jpg'
+    img_dir = './test_images/'
+    img_name = 'test4.jpg'
     img_output_dir = './test_images/output/'
-    video_path = './test_videos/test1.mov'
+    video_dir = './test_videos/'
+    video_name = '/test2.mp4'
     video_output_dir = './test_videos/output/'
 
-    video_json_path = './test_videos/output/skeleton_video.json'
+    video_json_dir = './test_videos/output/'
+    json_name = 'test2.json'
+    img = cv2.imread('{}{}'.format(img_dir, img_name))
 
-    # l = make_skeleton_video(video_path)
-    # skeleton_video2json(l, video_output_dir)
-    l = read_skeleton_video(video_json_path)
-    img = np.ndarray((1080, 1920, 3))
-    for sk in l:
-        draw_skeleton(img, sk, middle=True, video=True)
-    print(l)
-    # img = cv2.imread(path)
-    # sk = get_skeleton(mpPose, img)
-    #
-    # skeleton2json(sk, output_dir)
-    # draw_skeleton(img, sk, middle=True)
+    img = cv2.resize(img, None, fx=0.3, fy=0.3)
+    sk = get_skeleton(mpPose, img)
 
-    # print(sk)
+    # l = make_skeleton_video(video_dir, video_name)
+    # skeleton_video2json(l, video_output_dir, video_name)
+
+    # l = read_skeleton_video(video_json_dir, json_name)
+
+    # play_skeleton_video(l, (1000, 1000, 3))
+    # print(l)
