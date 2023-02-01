@@ -4,6 +4,7 @@ import numpy as np
 import json
 import os
 import math
+import tools.dtw_calculate as dc
 import matplotlib.pyplot as plt
 
 mmp = [0, -1, -1, -1, -1, -1, -1, 1, 2, -1, -1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22,
@@ -22,9 +23,9 @@ def change_coordinate(skeleton):
 
 def change_video_coordinate(skeleton_video):
     i = 0
-    while skeleton_video[i][0][0] == 0:
+    while i < len(skeleton_video) and skeleton_video[i][0][0] == 0:
         i += 1
-    sk = skeleton_video[i]
+    sk = (skeleton_video[i] + skeleton_video[i + 1] + skeleton_video[i + 2]) / 3
 
     mid_joint = (sk[4] + sk[5] + sk[17] + sk[18]) / 4
     n1, n2 = sk[3], sk[16]
@@ -44,6 +45,7 @@ def change_video_coordinate(skeleton_video):
             skeleton_video[i][j][:3] *= p
 
     return skeleton_video
+
 
 def draw_skeleton(img, skeleton, middle=True, show=False, video=False):
     # if middle:
@@ -126,7 +128,7 @@ def get_skeleton(pose, img):
         skeleton[3] = (mid + skeleton[4] + skeleton[5]) / 3
         skeleton[16] = (mid + skeleton[17] + skeleton[18]) / 3
 
-        #calculate dis
+        # calculate dis
         # n1, n2 = skeleton[3], skeleton[16]
         # dis = math.sqrt((n1[0] - n2[0]) ** 2 + (n1[1] - n2[1]) ** 2)
         # p = 0.1 / dis
@@ -152,6 +154,7 @@ def skeleton2json(skeleton, dir, file_name):
         json.dump(output_dict, f)
         print('write {} success'.format(path))
 
+
 def skeleton_video2json(skeleton_video, dir, file_name):
     output_list = list()
     if not os.path.exists(dir):
@@ -173,7 +176,9 @@ def skeleton_video2json(skeleton_video, dir, file_name):
         json.dump(output_list, f)
         print('write {} success'.format(path))
 
-def play_skeleton_video(skeleton_video, size=(1080, 1920, 3), middle=True, save=False, save_dir='', file_name='', std=False, std_skv=''):
+
+def play_skeleton_video(skeleton_video, size=(1080, 1920, 3), middle=True, save=False, save_dir='', file_name='',
+                        std=False, std_skv=''):
     name_without_suffix = file_name.split('.')[0]
     save_path = '{}{}_skeleton.mp4'.format(save_dir, name_without_suffix)
 
@@ -191,7 +196,7 @@ def play_skeleton_video(skeleton_video, size=(1080, 1920, 3), middle=True, save=
 
     for id, skeleton in enumerate(skeleton_video):
         img = np.ndarray(size, np.uint8)
-        if id < len(std_skv):
+        if std and id < len(std_skv):
             img = draw_skeleton(img, std_skv[id], middle=middle, show=False, video=True)
         img = draw_skeleton(img, skeleton, middle=middle, show=True, video=True)
         if save:
@@ -202,12 +207,13 @@ def play_skeleton_video(skeleton_video, size=(1080, 1920, 3), middle=True, save=
         print('The video is saved as {}.'.format(save_path))
         videoWriter.release()
 
+
 def test():
     mpPose = mp.solutions.pose
     pose = mpPose.Pose()
 
     img_dir = './test_images/'
-    img_name = 'test4.jpg'
+    img_name = 'test7.jpg'
     img_output_dir = './test_images/output/'
     video_dir = './test_videos/'
     video_name = '/test2.mp4'
@@ -218,12 +224,42 @@ def test():
     img = cv2.imread('{}{}'.format(img_dir, img_name))
 
     img = cv2.resize(img, None, fx=0.3, fy=0.3)
-    sk = get_skeleton(mpPose, img)
 
-    # l = make_skeleton_video(video_dir, video_name)
-    # skeleton_video2json(l, video_output_dir, video_name)
+    sk = get_skeleton(pose, img)
+    sk = change_coordinate(sk)
+    # img = draw_skeleton(img, sk)
 
-    # l = read_skeleton_video(video_json_dir, json_name)
 
-    # play_skeleton_video(l, (1000, 1000, 3))
-    # print(l)
+    joints = [[3, 4, 6], [3, 5, 7], [4, 6, 8], [5, 7, 9], [17, 19, 21], [18, 20, 22]]
+
+    h, w, c = img.shape
+    color = [(255, 0, 255), (0, 255, 0), (0, 0, 255), (255, 255, 255), (255, 0, 0), (255, 255, 0)]
+    # 0-purple 1-green 2-red 3-white 4-blue 5-aqua
+    sum = 0
+    for i, joint in enumerate(joints):
+
+        bx, by = int(sk[joint[0]][0] * w), int(sk[joint[0]][1] * h)
+        ex, ey = int(sk[joint[1]][0] * w), int(sk[joint[1]][1] * h)
+        bx, by = int(bx + w / 2), int(by + h / 2)
+        ex, ey = int(ex + w / 2), int(ey + h / 2)
+        # if skeleton[i[0]][3] > 0.2 and skeleton[i[1]][3] > 0.2:
+        cv2.line(img, (bx, by), (ex, ey), color[i], int(h / 300))
+
+
+        bx, by = int(sk[joint[1]][0] * w), int(sk[joint[1]][1] * h)
+        ex, ey = int(sk[joint[2]][0] * w), int(sk[joint[2]][1] * h)
+        bx, by = int(bx + w / 2), int(by + h / 2)
+        ex, ey = int(ex + w / 2), int(ey + h / 2)
+        # if skeleton[i[0]][3] > 0.2 and skeleton[i[1]][3] > 0.2:
+        cv2.line(img, (bx, by), (ex, ey), color[i], int(h / 100))
+
+
+
+        d1 = dc.calculate_angle(sk[joint[0]][0], sk[joint[0]][1],
+                                sk[joint[1]][0], sk[joint[1]][1],
+                                sk[joint[2]][0], sk[joint[2]][1], )
+        print(i, d1)
+        sum += d1
+    print(sum / 6)
+    cv2.imshow('', img)
+    cv2.waitKey(0)
