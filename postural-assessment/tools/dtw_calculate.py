@@ -11,7 +11,7 @@ def joint_distance(sk_1, sk_2):
     # sk_2 = sg.change_coordinate(sk_2)
     weight = [1, 1, 1, # head
               1, 1, 1, # upper body
-              2, 2, 2, 1, 1, 1, 5, 5, 5, 5, # arms and hands
+              2, 2, 2, 1, 1, 1, 10, 10, 10, 10, # arms and hands
               1, 1, 1, # lower body
               1, 1, 1, 1, 5, 5, 5, 5 # legs and feet
               ]
@@ -49,10 +49,31 @@ def angel_distance(sk_1, sk_2):
     return distance / 6
 
 
+
+def joint_relative_distance(sk_1, sk_2):
+    dis = 0
+    sk_1 = sg.change_coordinate(sk_1)
+    sk_2 = sg.change_coordinate(sk_2)
+    mid1 = (sk_1[4] + sk_1[5] + sk_1[17] + sk_1[18]) / 4
+    mid2 = (sk_2[4] + sk_2[5] + sk_2[17] + sk_2[18]) / 4
+    weight = [1, 1, 1,  # head
+              1, 1, 1,  # upper body
+              2, 2, 2, 1, 1, 1, 5, 5, 5, 5,  # arms and hands
+              1, 1, 1,  # lower body
+              1, 1, 1, 1, 5, 5, 5, 5  # legs and feet
+              ]
+
+    for i, joint in enumerate(sk_1):
+        dis += abs(math.sqrt(sk_1[i][0] ** 2 + sk_1[i][1] ** 2)
+                   - math.sqrt(sk_2[i][0] ** 2 + sk_2[i][1] ** 2)) * weight[i]
+    return dis
+
+
 def sk_distance(sk_1, sk_2):
     d1 = joint_distance(sk_1, sk_2)
-    # d2 = angel_distance(sk_1, sk_2)
     d2 = 0
+    # d2 = angel_distance(sk_1, sk_2)
+    # d2 = joint_relative_distance(sk_1, sk_2)
     return d1 + d2
 
 

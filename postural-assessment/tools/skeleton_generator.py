@@ -22,12 +22,19 @@ def change_coordinate(skeleton):
 
 
 def change_video_coordinate(skeleton_video):
-    i = 0
-    while i < len(skeleton_video) and skeleton_video[i][0][0] == 0:
-        i += 1
-    sk = (skeleton_video[i] + skeleton_video[i + 1] + skeleton_video[i + 2]) / 3
+    sk = skeleton_video[0][0][0]
+    frame = 0
+    for i, skeleton in enumerate(skeleton_video):
+        if skeleton[0][0] != 0:
+            sk += skeleton
+            frame += 1
+    if frame != 0:
+        sk /= frame
+    else:
+        print('From change_video_coordinate: no skeleton detected!')
+        return []
 
-    mid_joint = (sk[4] + sk[5] + sk[17] + sk[18]) / 4
+    mid_joint = (sk[4] + sk[5] + sk[17] + sk[18] + sk[0] + sk[26] + sk[25] + sk[10] + sk[11]) / 9
     n1, n2 = sk[3], sk[16]
     dis = math.sqrt((n1[0] - n2[0]) ** 2 + (n1[1] - n2[1]) ** 2)
     p = 0.1 / dis if dis != 0 else 1
@@ -104,6 +111,15 @@ def make_skeleton_video(dir, video_name):
         frame += 1
         if (frame % 50 == 0):
             print('frame {} success!'.format(frame))
+
+    frame = 0
+    for i, skeleton in enumerate(skeleton_video):
+        if skeleton[0][0] != 0:
+            frame += 1
+    if frame <= 10:
+        print('From make_skeleton_video: no skeleton detected!')
+        return []
+
     return skeleton_video
 
 
