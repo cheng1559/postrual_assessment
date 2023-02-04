@@ -44,7 +44,7 @@ def evalutae_from_json(json_dir, video_name, pose_type, show=True):
         return
 
     if show:
-        sg.play_skeleton_video(sk_video, (1080, 1920, 3), save=True, middle=True, save_dir=video_save_dir,
+        sg.play_skeleton_video(sk_video, (1080, 1920, 3), save=False, middle=True, save_dir=video_save_dir,
                                file_name=video_name, std=True, std_skv=std_skv)
 
     d = dc.evaluate(sk_video, pose_type, show=show)
@@ -78,5 +78,5 @@ if __name__ == '__main__':
     pose_type = 'banlanchui'
 
     # evaluate(video_dir, video_name, pose_type)
-    evalutae_from_json(json_dir, video_name, pose_type)
+    evalutae_from_json(json_dir, video_name, pose_type, show=True)
     # test(pose_type)

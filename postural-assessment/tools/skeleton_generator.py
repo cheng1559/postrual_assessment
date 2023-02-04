@@ -211,12 +211,15 @@ def play_skeleton_video(skeleton_video, size=(1080, 1920, 3), middle=True, save=
         std_skv = change_video_coordinate(std_skv)
 
     for id, skeleton in enumerate(skeleton_video):
-        img = np.ndarray(size, np.uint8)
+        img = np.zeros(size, np.uint8)
+
         if std and id < len(std_skv):
             img = draw_skeleton(img, std_skv[id], middle=middle, show=False, video=True)
-        img = draw_skeleton(img, skeleton, middle=middle, show=True, video=True)
+        img = draw_skeleton(img, skeleton, middle=middle, show=False, video=True)
         if save:
             videoWriter.write(img)
+
+        cv2.imshow('', img)
         cv2.waitKey(1)
 
     if save:
@@ -243,8 +246,6 @@ def test():
 
     sk = get_skeleton(pose, img)
     sk = change_coordinate(sk)
-    # img = draw_skeleton(img, sk)
-
 
     joints = [[3, 4, 6], [3, 5, 7], [4, 6, 8], [5, 7, 9], [17, 19, 21], [18, 20, 22]]
 
@@ -268,8 +269,6 @@ def test():
         ex, ey = int(ex + w / 2), int(ey + h / 2)
         # if skeleton[i[0]][3] > 0.2 and skeleton[i[1]][3] > 0.2:
         cv2.line(img, (bx, by), (ex, ey), color[i], int(h / 100))
-
-
 
         d1 = dc.calculate_angle(sk[joint[0]][0], sk[joint[0]][1],
                                 sk[joint[1]][0], sk[joint[1]][1],
