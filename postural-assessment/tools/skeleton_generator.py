@@ -84,10 +84,18 @@ def draw_skeleton(img, skeleton, middle=True, show=False, video=False):
 def read_skeleton_video(dir, json_name, debug=False):
     path = '{}{}'.format(dir, json_name)
     skeleton_video = list()
+
+    if not os.path.exists(path):
+        print('From read_skeleton_video: didn\'t find the json file!')
+        return []
+
     with open(path, 'r') as load_f:
         load_list = json.load(load_f)
         if debug:
             print('Load {} success.'.format(path))
+    if len(load_list) == 0:
+        print('From read_skeleton_video: no skeleton detected!')
+        return []
     for sk_dict in load_list:
         skeleton = np.array(sk_dict['skeleton'])
         skeleton_video.append(skeleton)

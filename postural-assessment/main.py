@@ -68,15 +68,16 @@ def test(pose_type):  # baihe louxi banlanchui rufengsibi
 
 if __name__ == '__main__':
     video_output_dir = './video_output/'
-    video_length = 5000
-    # gv.get_video(video_output_dir, video_length)
+    video_length = 8000
+    gv.get_video(video_output_dir, video_length)
 
-    # video_dir = video_output_dir
-    video_dir = './test_videos/'
-    video_name = 'banlanchui5.mp4'
+    video_dir = video_output_dir
+    video_name = 'video.mp4'
+    # video_dir = './test_videos/'
+    # video_name = 'banlanchui5.mp4'
     json_dir = './test_videos/output/'
     pose_type = 'banlanchui'
 
-    # evaluate(video_dir, video_name, pose_type)
-    evalutae_from_json(json_dir, video_name, pose_type, show=True)
+    evaluate(video_dir, video_name, pose_type)
+    # evalutae_from_json(json_dir, video_name, pose_type, show=True)
     # test(pose_type)
