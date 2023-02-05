@@ -4,7 +4,7 @@ import numpy as np
 import time
 
 
-def get_video(save_dir, length, delay=5000):
+def get_video(save_dir, length, delay=5000, show=False):
     cap = cv2.VideoCapture(0)
     success, img = cap.read()
     h, w, c = img.shape
@@ -40,5 +40,6 @@ def get_video(save_dir, length, delay=5000):
             break
         last_t = cur_t
 
-        cv2.imshow('', img)
+        # cv2.imshow('', img)
         cv2.waitKey(1)
+    cap.release()
