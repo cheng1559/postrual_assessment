@@ -19,7 +19,7 @@ def evaluate(video_dir, video_name, pose_type, show=True):
 
     if len(sk_video) == 0:
         print('From main.evaluate: no skeleton detected!')
-        return
+        return -1
 
     sg.skeleton_video2json(sk_video, json_dir, video_name)
 
@@ -74,15 +74,16 @@ if __name__ == '__main__':
     video_length = 8000
     video_dir = video_output_dir
     video_name = 'video.mp4'
-    # video_dir = './test_videos/'
-    # video_name = 'banlanchui5.mp4'
+    video_dir = './test_videos/'
+    video_name = 'rufengsibi4.mp4'
     json_dir = './test_videos/output/'
-    pose_type = 'banlanchui'
+    pose_type = 'rufengsibi'
 
     # gv.get_video(video_output_dir, video_length)
 
 
-    # evaluate(video_dir, video_name, pose_type)
+    score = evaluate(video_dir, video_name, pose_type, show=True)
+    print('your score of {} is {}.'.format(pose_type, score))
     # evalutae_from_json(json_dir, video_name, pose_type, show=True)
     # test(pose_type)
 
@@ -94,21 +95,12 @@ if __name__ == '__main__':
         data = receive_data.decode().split(' ')
         print('receive {}'.format(data))
 
-        if data[0] == 'test':
-            argc = data[1]
-            argv = data[2:]
-
-        elif data[0] == 'camera':
+        if data[0] == 'camera' and len(data) == 2:
             video_length = int(data[1])
             gv.get_video(video_output_dir, video_length)
             sock.sendto(str('camera success!').encode(), address)
 
-        elif data[0] == 'evaluate':
-            if len(data) < 3:
-                print('undefined operation: {}'.format(data))
-                sock.sendto(str('error').encode(), address)
-                continue
-
+        elif data[0] == 'evaluate' and len(data) == 3:
             video_length = int(data[1])
             pose_type = data[2]
             video_name = 'video.mp4'
@@ -120,7 +112,22 @@ if __name__ == '__main__':
             t = time.perf_counter()
             score = evaluate(video_dir, video_name, pose_type, show=False)
             print(time.perf_counter() - t)
-            sock.sendto(str('your score is {}.'.format(score)).encode(), address)
+            if score != '-1':
+                sock.sendto(str('your score is {}.'.format(score)).encode(), address)
+            else:
+                sock.sendto(str('no skeleton detected!').encode(), address)
+
+        elif len(data) == 3:
+            if data[1] == '+':
+                ans = int(data[0]) + int(data[2])
+            if data[1] == '-':
+                ans = int(data[0]) - int(data[2])
+            if data[1] == '*':
+                ans = int(data[0]) * int(data[2])
+            if data[1] == '/':
+                ans = int(data[0]) // int(data[2])
+            sock.sendto(str(ans).encode(), address)
+
 
         elif data[0] == 'quit':
             print('quit')

@@ -7,17 +7,16 @@ import tools.skeleton_generator as sg
 
 def joint_distance(sk_1, sk_2):
     distance = 0
-    # sk_1 = sg.change_coordinate(sk_1)
-    # sk_2 = sg.change_coordinate(sk_2)
-    weight = [1, 1, 1, # head
-              1, 1, 1, # upper body
-              2, 2, 2, 1, 1, 1, 10, 10, 10, 10, # arms and hands
-              1, 1, 1, # lower body
-              1, 1, 1, 1, 5, 5, 5, 5 # legs and feet
+    weight = [1, 1, 1,  # head
+              1, 1, 1,  # upper body
+              2, 2, 2, 1, 1, 1, 10, 10, 10, 10,  # arms and hands
+              1, 1, 1,  # lower body
+              1, 1, 1, 1, 5, 5, 5, 5  # legs and feet
               ]
     for i in range(0, 27):
         node1, node2 = sk_1[i], sk_2[i]
-        distance += math.sqrt((node1[0] - node2[0]) ** 2 + (node1[1] - node2[1]) ** 2) * weight[i]
+        distance += math.sqrt((node1[0] - node2[0]) ** 2 +
+                              (node1[1] - node2[1]) ** 2) * weight[i]
     return distance * 0.4
 
 
@@ -87,10 +86,13 @@ def evaluate(eval_skv, name, show=True):
 
     d, cost_matrix, acc_cost_matrix, path = dtw(std_skv, eval_skv, dist=sk_distance)
     if show:
-        plt.imshow(acc_cost_matrix.T, origin='lower', cmap='gray', interpolation='nearest')
+        plt.imshow(acc_cost_matrix.T, origin='lower', cmap='gray',
+                   interpolation='nearest')
         plt.plot(path[0], path[1], 'w')
         plt.show()
-    return d / (len(std_skv) + len(eval_skv))
+    d = d / (len(std_skv) + len(eval_skv))
+    # score = max(min(-52 * d * d + 2.7 * d + 100.8, 100), 0)
+    return d
 
 
 # def test():
